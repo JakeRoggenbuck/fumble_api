@@ -23,15 +23,8 @@ def read_root():
 @app.get("/{fumble}/{roll}")
 def define_word(fumble, roll):
     critical_collection = setup_db()
-    docs = critical_collection.find({"short": fumble})
-    for doc in docs:
-        new_roll = doc["roll"]
-        if isinstance(new_roll, int):
-            if int(roll) == new_roll:
-                return {doc["type"], doc["label"], doc["desc"]}
-        else:
-            if int(roll) in new_roll:
-                return {doc["type"], doc["label"], doc["desc"]}
+    doc = critical_collection.find_one({"short": fumble, "roll": (int(roll))})
+    return {doc["type"], doc["label"], doc["desc"]}
 
 
 if __name__ == "__main__":
